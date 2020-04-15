@@ -21,15 +21,37 @@ import application.model.Player;
 public class GameController 
 {
 	private Stage primaryStage;
-	private @FXML ImageView dino;
+	private @FXML ImageView dinoIcon;
+	private @FXML ImageView ground;
+	private @FXML ImageView obstaclesPath;
+	private @FXML TextField score;
+	private @FXML Label timer;
 	
+	Player player;
 	private boolean running = false;
 	private boolean gameOver = false;
 	private int timer = 60;
 	
-	Ground ground;
-	//Player dino;
-	Obstacles obstacles;
+	/**
+	* Method to set the image of the dinoIcon
+	*/
+	public void setDinoImage(String imagePath)
+	{
+		Image img = new Image(imagePath);
+		dinoIcon.setImage(img);
+	}
+	
+	/**
+	* Method that controls the dinoIcon image
+	*/
+	public void switchDinoImage(Action event)
+	{
+		while(player.status)
+		{
+			setDinoImage(imagePath);
+		}
+	}
+	
 	
 	/**
 	 * Set-up utility for the game view
