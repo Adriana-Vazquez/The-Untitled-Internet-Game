@@ -48,7 +48,19 @@ public class GameController
 	{
 		while(player.status)
 		{
-			setDinoImage(imagePath);
+			if(player.status == JUMPING)
+			{
+				//move imageView up
+				if(dinoTop > topPoint && !topPointReached)
+				{
+					for(topPoint = jumpFactor, , jumpFactor--)
+					{
+						dinoIcon.
+					}
+				}
+				
+			}
+			setDinoImage(imagePath);	
 		}
 	}
 	
