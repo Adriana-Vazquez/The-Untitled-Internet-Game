@@ -10,12 +10,6 @@ import application.model.Ground;
 
 public class Player
 {
-	//variables to place characterIcon
-	private static int dinoTop, dinoBottom, topPoint;
-	
-	//variables to jump characterIcon
-	private static boolean topPointReached;
-	private static int jumpFactor = 20;
 	
 	//variables of status of characterIcon
 	public static final int STAND_STILL = 1,
@@ -86,15 +80,7 @@ public class Player
 	
 	public void run()
 	{
-		dinoTop = dinoTopY;
 		state = RUNNING;
-	}
-	
-	public void jump()
-	{
-		dinoTop = dinoTopY;
-		topPointReached = false;
-		state = JUMPING;
 	}
 	
 }
