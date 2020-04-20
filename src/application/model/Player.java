@@ -11,7 +11,6 @@ import application.model.Ground;
 public class Player
 {
 	//variables to place characterIcon
-	private static int dinoBaseY, dinoTopY, dinoStartX, dinoEndX;
 	private static int dinoTop, dinoBottom, topPoint;
 	
 	//variables to jump characterIcon
@@ -57,6 +56,7 @@ public class Player
 				stand;
 				break;
 			case RUNNING:
+			case JUMPING:
 				if(foot == NO_FOOT)
 				{
 					foot = LEFT_FOOT;
@@ -73,13 +73,28 @@ public class Player
 					leftFootDino;
 				}
 				break;
-			case JUMPING:
-				jumpingDino.png";
-				break;
 			case DIE:
-				String imagePath = "/photo/deadDino.png";
+				deadDino;
 				break;
 		}
+	}
+	
+	public void die()
+	{
+		state = DIE;
+	}
+	
+	public void run()
+	{
+		dinoTop = dinoTopY;
+		state = RUNNING;
+	}
+	
+	public void jump()
+	{
+		dinoTop = dinoTopY;
+		topPointReached = false;
+		state = JUMPING;
 	}
 	
 }
