@@ -1,0 +1,156 @@
+package application;
+
+import java.io.IOException;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
+public class DinoRunGame extends Application{
+
+	public static void main(String[] args) 
+	{
+		launch(args);
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws IOException
+	{
+		//set the layout size
+		Pane root = new Pane();
+		root.setPrefSize(600, 400);
+		
+		//creates the obstacles
+		Sprite obstacle = new Sprite(30, 50, "enemy", Color.BLACK);
+		PathTransition transition = new PathTransition();
+		Line line = new Line(600, 0,-100,0);
+		line.setLayoutY(335);
+		
+		//creates the player
+		Sprite player = new Sprite(30, 290, 40, 70, "player", Color.BLUE);
+		
+		//creates the timer
+		Clock timer = new Clock();
+
+		//add each node
+		root.getChildren().add(player);
+		root.getChildren().add(obstacle);
+		root.getChildren().add(timer);
+		
+		//makes obstacle path
+		transition.setNode(obstacle);
+		transition.setDuration(Duration.seconds(1));
+		transition.setPath(line);
+		transition.setCycleCount(30);
+		transition.play();
+
+		if(timer.timerClock==0)
+		{
+			transition.stop();
+		}
+		
+		
+		//sets up the scene to view
+		Scene scene = new Scene(root);
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		
+		//makes player node move based on space bar
+		scene.setOnKeyPressed(e->
+		{
+			switch(e.getCode()) 
+			{	
+				case SPACE:
+					player.jump();
+					break;
+				default:
+					break;
+			}
+		});
+		scene.setOnKeyReleased(e->
+		{
+			switch(e.getCode()) 
+			{	
+				case SPACE:
+					player.ground();
+					break;
+				default:
+					break;
+			}
+		});
+	}
+	
+	
+	public class Sprite extends Rectangle
+	{
+		boolean hasCollided = false;
+		final String playerOrObstacle;
+		
+		Sprite(int w, int h, String playerOrObstacle, Color color)
+		{
+			super(w, h, color);
+			this.playerOrObstacle = playerOrObstacle;
+		}
+		
+		Sprite(int x, int y, int w, int h, String playerOrObstacle, Color color)
+		{
+			super(w, h, color);
+			hasCollided = false;
+			this.playerOrObstacle = playerOrObstacle;
+			setLayoutX(x);
+			setTranslateY(y);
+		}
+		
+		
+		public void ground()
+		{
+			setTranslateY(getTranslateY()+60);
+		}
+
+		public void jump()
+		{
+			setTranslateY(getTranslateY()-60);
+		}
+	}
+	
+	public class Clock extends Pane
+	{
+		private Timeline animation;
+		private int timerClock = 30;
+		private String s = "";
+		
+		Label label = new Label("30");
+		
+		private Clock()
+		{
+			label.setFont(javafx.scene.text.Font.font(40));
+			label.setLayoutX(530);
+			label.setLayoutY(20);
+			
+			getChildren().add(label);
+			animation = new Timeline(new KeyFrame(Duration.seconds(1), e->timerLabel()));
+			animation.setCycleCount(Timeline.INDEFINITE);
+			animation.play();
+		}
+		
+		private void timerLabel() 
+		{
+			if(timerClock > 0)
+			{
+				timerClock--;
+			}
+			
+			s = timerClock + "";
+			label.setText(s);
+		}
+	}
+}
