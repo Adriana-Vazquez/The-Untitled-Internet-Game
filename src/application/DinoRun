@@ -8,6 +8,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -30,7 +31,7 @@ public class DinoRunGame extends Application{
 		root.setPrefSize(600, 400);
 		
 		//creates the obstacles
-		Sprite obstacle = new Sprite(30, 50, "enemy", Color.BLACK);
+		Sprite obstacle = new Sprite(20, 50, "enemy", Color.BLACK);
 		PathTransition transition = new PathTransition();
 		Line line = new Line(600, 0,-100,0);
 		line.setLayoutY(335);
@@ -53,11 +54,10 @@ public class DinoRunGame extends Application{
 		transition.setCycleCount(30);
 		transition.play();
 
-		if(timer.timerClock==0)
+		if(timer.timerClock==0 || player.getBoundsInParent().intersects(obstacle.getBoundsInParent()))
 		{
 			transition.stop();
 		}
-		
 		
 		//sets up the scene to view
 		Scene scene = new Scene(root);
@@ -65,28 +65,8 @@ public class DinoRunGame extends Application{
 		primaryStage.show();
 		
 		//makes player node move based on space bar
-		scene.setOnKeyPressed(e->
-		{
-			switch(e.getCode()) 
-			{	
-				case SPACE:
-					player.jump();
-					break;
-				default:
-					break;
-			}
-		});
-		scene.setOnKeyReleased(e->
-		{
-			switch(e.getCode()) 
-			{	
-				case SPACE:
-					player.ground();
-					break;
-				default:
-					break;
-			}
-		});
+		scene.setOnKeyPressed(e->{if(e.getCode() == KeyCode.SPACE) {player.jump();}});
+		scene.setOnKeyReleased(e->{if(e.getCode() == KeyCode.SPACE) {player.ground();}});
 	}
 	
 	
