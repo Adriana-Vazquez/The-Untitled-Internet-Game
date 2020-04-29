@@ -18,6 +18,8 @@ import javafx.util.Duration;
 
 public class DinoRunGame extends Application{
 
+	private Pane root;
+	
 	public static void main(String[] args) 
 	{
 		launch(args);
@@ -27,7 +29,7 @@ public class DinoRunGame extends Application{
 	public void start(Stage primaryStage) throws IOException
 	{
 		//set the layout size
-		Pane root = new Pane();
+		root = new Pane();
 		root.setPrefSize(600, 400);
 		
 		//creates the obstacles
@@ -41,11 +43,18 @@ public class DinoRunGame extends Application{
 		
 		//creates the timer
 		Clock timer = new Clock();
+		
+		Label instruction = new Label("Press SPACE to jump");
+		instruction.setFont(javafx.scene.text.Font.font(20));
+		instruction.setLayoutX(200);
+		instruction.setLayoutY(90);
+		
 
 		//add each node
 		root.getChildren().add(player);
 		root.getChildren().add(obstacle);
 		root.getChildren().add(timer);
+		root.getChildren().add(instruction);
 		
 		//makes obstacle path
 		transition.setNode(obstacle);
@@ -54,9 +63,10 @@ public class DinoRunGame extends Application{
 		transition.setCycleCount(30);
 		transition.play();
 
-		if(timer.timerClock==0 || player.getBoundsInParent().intersects(obstacle.getBoundsInParent()))
+		if(timer.timerClock==0 || obstacle.getBoundsInParent().contains(player.getBoundsInParent()))
 		{
 			transition.stop();
+			
 		}
 		
 		//sets up the scene to view
